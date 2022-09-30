@@ -8,6 +8,8 @@ from apps.bzcm.views.EDU000E02 import EDU000E02
 from apps.bzcm.views.EDU000E01 import EDU000E01
 from apps.bzcm.views.EDU020E01 import EDU020E01
 from apps.bzcm.views.EDU020E02 import EDU020E02
+from apps.bzcm.views.EDU020E04 import EDU020E04
+
 urlpatterns = [
     # 'BZCM020E10/list/' 이 url의 호출이 있으면 BZCM020E10라는 뷰에 get_list 함수를 호출한다
     path('BZCM020E10/list/', BZCM020E10.as_view({'post': 'get_list'})),
@@ -43,4 +45,9 @@ urlpatterns = [
     #교육현황
     path('EDU020E02/byYearEduList/', EDU020E02.as_view({'post': 'get_list'})),
     path('EDU020E02/byDeptEduList/', EDU020E02.as_view({'post': 'get_list'})),
+
+    #교육현황
+    path('EDU020E04/byEmpEduRankList/', EDU020E04.as_view({'post': 'get_list'})),
+    path('EDU020E04/byDeptEduRankList/', EDU020E04.as_view({'post': 'get_list'})),
+
 ]
