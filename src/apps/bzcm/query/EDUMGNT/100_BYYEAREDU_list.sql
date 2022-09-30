@@ -1,3 +1,4 @@
+
 select
     pang_sf_get_edu_year(edu_schedule_no) as 연도,
 	SUM(EDU_TIME) as 계획,

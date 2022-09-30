@@ -1,3 +1,4 @@
+
 select
 	a.edu_plan_no,
 	a.edu_schedule_no,

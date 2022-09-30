@@ -1,3 +1,4 @@
+
 select
 	dept_code,
 	dept_name,

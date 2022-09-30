@@ -1,3 +1,4 @@
+
 select
 	pang_sf_get_dept_name(dept_code) as id,
 	count(*) as value
