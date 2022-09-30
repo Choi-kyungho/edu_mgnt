@@ -1,0 +1,5 @@
+✨ feature: ["feature/*", "feat/*", "feature-*"]
+🐛 fix: ["fix/*", "bug/*", "bugfix/*", "hotfix/*"]
+📚 task: ["task/*", "chore/*"]
+patch: "*develop*"
+skip-changelog: "release/*"

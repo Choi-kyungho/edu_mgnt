@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+  nginx:
+    #build:
+    #  context: .
+    #  dockerfile: ./docker/nginx/Dockerfile
+    image: nginx:latest
+    container_name: vntg-wdk-api-nginx
+    ports:
+      # host:container
+      - "9000:80"
+    volumes:
+      # 직접 입력할 경우 - local(host):container
+      - ./nginx:/etc/nginx/conf.d
+      # Django의 static 경로를 매핑하고자하는 nginx 경로 - 운영일때는 경로 바꿔야 함
+      - static_volume:/usr/src/app/staticfiles
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  api:
+#    build:
+#      context: .
+#      dockerfile: ./docker/backend/Dockerfile
+    container_name: vntg-wdk-api
+    #Github Package에서 image pull
+    image: ghcr.io/vntgcorp/vntg-wdk-api:latest
+
+    # command는 운영일 떄, static파일을 모을 수 있는 명령 추가 필요, 개발서버는 gunicorn worker 3개
+    command: "gunicorn --workers=3 config.wsgi:application --bind 0.0.0.0:8000 --env DJANGO_SETTINGS_MODULE=config.settings.dev"
+    volumes:
+      # static 경로는 운영일때는 경로 바꿔야 함
+      - static_volume:/usr/src/app/staticfiles
+      # 첨부파일 저장 경로
+      - /root/projects/vntg-wdk-api/upload:/usr/src/app/upload
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+volumes:
+  # Django static 파일을 nginx를 통해 서브하기 위한 볼륨
+  static_volume:

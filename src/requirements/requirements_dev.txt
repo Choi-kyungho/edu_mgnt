@@ -1,0 +1,9 @@
+-r requirements_base.txt
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.core.api-1.1.4.tar.gz
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.common.api-1.1.4.tar.gz
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.comm.api-1.1.4.tar.gz
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.attach.api-1.1.4.tar.gz
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.mail.api-1.1.4.tar.gz
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.report.api-1.1.4.tar.gz
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.todo.api-1.1.4.tar.gz
+https://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@raw.githubusercontent.com/VntgCorp/vntg-wdk-api/main/packages/vntg.wdk.approval.api-1.1.4.tar.gz

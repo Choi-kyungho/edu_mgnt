@@ -1,0 +1,73 @@
+name: Create release pull request
+# Must manually add the label `skip-changelog` to the repository before running this workflow.
+
+on:
+  workflow_dispatch:
+#    inputs:
+#      version_name:
+#        description: "One of major or minor"
+#        required: true
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get draft release version
+        uses: cardinalby/git-get-release-action@v1
+        with:
+          latest: true
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: get-draft-release
+        # Fail this step if not found draft release
+
+      - name: Generate next version number (remove prefix)
+        run: |
+          version="$(echo ${{ steps.get-draft-release.outputs.tag_name }} | sed -r 's/^.*([0-9]+\.[0-9]+\.[0-9]+[0-9a-z\-\+]*)/\1/')"
+          echo "::set-output name=version::$version"
+        id: next-version
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "github-actions"
+      - id: pr_desc
+        run: |
+          version=v${{ steps.next-version.outputs.version }}
+          branch=release/$version
+          pr_title="Release $version"
+          echo "::set-output name=branch::$branch"
+          echo "::set-output name=pr_title::$pr_title"
+          echo "::set-output name=version::$version"
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+#      - name: Install package
+#        run: |
+#          pip install -e .
+
+      - name: Install bump2version
+        run: python -m pip install bumpversion # "bumpversion" installs bump2version
+
+      - name: Dry run bumpversion and create pull-request
+        run: |
+          git checkout -B ${{ steps.pr_desc.outputs.branch }}
+          bumpversion --new-version ${{ steps.next-version.outputs.version }} bogus-part --verbose
+          git add .
+          git commit -m"Bump version to ${{ steps.pr_desc.outputs.version }}"
+          git push origin ${{ steps.pr_desc.outputs.branch }}
+#      - run: gh pr create -B main -t "${{ steps.pr_desc.outputs.pr_title }}" -b "" --fill --label "skip-changelog"
+      - run: gh pr create -B main -t "${{ steps.pr_desc.outputs.pr_title }}" -b ""
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#      # This is lifted directly from the bump2version docs.
+#      # Version number will be saved in `env` section of each consecutive stage
+#      - name: Store new version number
+#        run: echo "version_number=`bumpversion --dry-run --list ${{ steps.next-version.outputs.version }} | grep new_version | sed -r s,"^.*=",,`" >> $GITHUB_ENV
