@@ -11,5 +11,5 @@ SELECT  emp_no
        ,sf_get_code_name('CM27', responsi) as responsi_name
        ,use_yn
 FROM pang_emp_info
-WHERE emp_name like '%%' || :p_emp_name || '%%';
+WHERE emp_name like '%%' || :p_emp_name || '%%'
 ORDER BY dept_code, emp_no;
