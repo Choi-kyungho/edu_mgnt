@@ -25,7 +25,8 @@ class EDU000E04(BaseSqlApiView):
         node_schdlList.model = PangEduSchdlMgnt
         node_schdlList.table_name = 'pang_edu_schdl_mgnt'
         node_schdlList.key_columns = ['edu_schedule_no']
-        node_schdlList.update_columns = ['edu_schedule_no', 'edu_year', 'edu_from_dt', 'edu_to_dt', 'close_yn', 'rmk']
+        node_schdlList.update_columns = ['edu_schedule_no', 'edu_year', 'edu_from_dt', 'edu_to_dt', 'close_yn', 'rmk',
+                                         'first_rg_yms', 'first_rg_idf', 'last_update_yms', 'last_update_idf']
         self._append_node(node_schdlList)
 
     # region 조회

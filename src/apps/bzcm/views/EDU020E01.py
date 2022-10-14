@@ -76,5 +76,6 @@ class EDU020E01(BaseSqlApiView):
 
 
         """
+
         return self._exec_get(request)
 
