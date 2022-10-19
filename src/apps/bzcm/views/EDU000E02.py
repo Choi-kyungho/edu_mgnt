@@ -44,19 +44,13 @@ class EDU000E02(BaseSqlApiView):
                 return None
 
             filter_data = {
-                'p_emp_name': request_data.get('p_emp_name', '%')
+                'p_emp_name': request_data.get('p_emp_name', '%'),
+                'p_dept_code': request_data.get('p_dept_code', '%')
             }
 
         return filter_data
 
     def get_list(self, request):
-        print()
-        print()
-        print()
-        print("크롤링 테스트1~~~~~~~~~~~~~~~")
-        print()
-        print()
-        print()
         return self._exec_get(request)
 
     def get_sublist(self, request):

@@ -12,4 +12,5 @@ SELECT  emp_no
        ,use_yn
 FROM pang_emp_info
 WHERE emp_name like '%%' || :p_emp_name || '%%'
+  AND dept_code like '%%' || :p_dept_code || '%%'
 ORDER BY dept_code, emp_no;

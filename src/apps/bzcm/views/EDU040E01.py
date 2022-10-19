@@ -13,7 +13,7 @@ from selenium import webdriver
 
 LOGGER = logging.getLogger(__name__)
 
-# 크롤링 테스트
+# 크롤링 / 교육순위 (인프런)
 class EDU040E01(BaseSqlApiView):
 
     # region 노드 정의
@@ -37,50 +37,35 @@ class EDU040E01(BaseSqlApiView):
                                     'edu_attach_id', 'edu_absence_yn']
         self._append_node(node_crawling)
 
-    # region 조회
-    # endregion
-
-    # def _create_filter(self, node: BusinessNode, parameter_list=None, request_data=None, include_all=False):
-    #     filter_data = None
-    #
-    #     if node.node_name == 'crawlingList':
-    #         if len(request_data) == 0:
-    #             return None
-    #
-    #         filter_data = {
-    #             'p_edu_absence_yn': request_data.get('p_edu_absence_yn', '%')
-    #         }
-    #     return filter_data
-
     def get_list(self, request):
         #options = Options()
         options = webdriver.ChromeOptions()
         options.add_argument("headless")
+        #driver = webdriver.Chrome(executable_path=r'C:\github\chromedriver_win32\chromedriver.exe', options=options)
+        # options 추가하고 timeout 나중에 옵션도 같이 넣어주기
+
         driver = webdriver.Chrome(executable_path=r'C:\github\chromedriver_win32\chromedriver.exe')
 
-        eduNameList = list()
+        # 인프런
         eduList = list()
+
 
         url = 'https://www.inflearn.com/courses/it-programming/web-dev?order=popular'
         driver.get(url)
 
         i = 1
 
-        while (len(eduNameList) < 5):
+        while (len(eduList) < 10):
             eduNameList_xpath_id = str('//*[@id="courses_section"]/div/div/div/main/div[3]/div/div[') + str(i) + str(']/div/a/div[2]/div[1]')
             eduCostList_xpath_id = str('//*[@id="courses_section"]/div/div/div/main/div[3]/div/div[') + str(i) + str(']/div/a/div[2]/div[4]')
             eduAuthorList_xpath_id = str('//*[@id="courses_section"]/div/div/div/main/div[3]/div/div[') + str(i) + str(']/div/a/div[2]/div[2]')
             eduReviewList_xpath_id = str('//*[@id="courses_section"]/div/div/div/main/div[3]/div/div[') + str(i) + str(']/div/a/div[2]/div[3]/span')
-            eduDescription_xpath_id = str('//*[@id="courses_section"]/div/div/div/main/div[3]/div/div[') + str(i) + str(']/div/div/a/p[2]')
-
-            # 링크 url 크롤링
             eduLinkList_xpath_id = str('//*[@id="courses_section"]/div/div/div/main/div[3]/div/div[') + str(i) + str(']/div/a')
 
             i += 1
             try:
                 # 인기순 top10 교육명
                 eduNameFound = driver.find_element("xpath", eduNameList_xpath_id)
-                eduNameList.append(eduNameFound.text)
                 eduDic = {}
                 eduDic["seq"] = i-1
                 eduDic["eduName"] = eduNameFound.text
@@ -101,20 +86,12 @@ class EDU040E01(BaseSqlApiView):
                 eduLinkFound = driver.find_element("xpath", eduLinkList_xpath_id)
                 eduDic["eduLink"] = eduLinkFound.get_attribute('href')
 
-                # 교육 설명
-                eduDescriptionFound = driver.find_element("xpath", eduDescription_xpath_id)
-                eduDic["eduDescription"] = eduDescriptionFound.text
-
-                print("eduDescriptionFound.text===========>", eduDescriptionFound.text)
-
                 eduList.append(eduDic)
             except:
                 print("There is no xpath_id like that %s" % eduNameList_xpath_id)
+                # 인프런 END
 
         driver.quit()
-
-        print("eduList====>", eduList)
-
 
         return_data = {'success': True, 'code': 0, 'message': 'OK', 'data': None}
         return_data['data'] = eduList

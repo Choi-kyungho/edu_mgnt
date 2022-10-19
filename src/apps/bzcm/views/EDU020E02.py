@@ -27,7 +27,7 @@ class EDU020E02(BaseSqlApiView):
                                     'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
                                     'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
                                     'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
-                                    'edu_attach_id', 'edu_absence_yn']
+                                    'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
         self._append_node(node_by_year_edu_list)
 
         # 부서별 교육 현황
@@ -41,8 +41,36 @@ class EDU020E02(BaseSqlApiView):
                                                 'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
                                                 'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
                                                 'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
-                                                'edu_attach_id', 'edu_absence_yn']
+                                                'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
         self._append_node(node_by_dept_edu_list)
+
+        # 사원별 교육 순위
+        node_by_emp_edu_rank = BusinessNode()
+        node_by_emp_edu_rank.node_name = 'byEmpEduRankList'
+        node_by_emp_edu_rank.sql_filename = '100_BYEMPEDURANK_list'
+        node_by_emp_edu_rank.model = PangEduPlanMgnt
+        node_by_emp_edu_rank.table_name = 'pang_edu_plan_mgnt'
+        node_by_emp_edu_rank.key_columns = ['edu_plan_no']
+        node_by_emp_edu_rank.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
+                                                'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
+                                                'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
+                                                'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
+                                                'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
+        self._append_node(node_by_emp_edu_rank)
+
+        # 부서별 교육 순위
+        node_by_dept_edu_rank = BusinessNode()
+        node_by_dept_edu_rank.node_name = 'byDeptEduRankList'
+        node_by_dept_edu_rank.sql_filename = '100_BYDEPTEDURANK_list'
+        node_by_dept_edu_rank.model = PangEduPlanMgnt
+        node_by_dept_edu_rank.table_name = 'pang_edu_plan_mgnt'
+        node_by_dept_edu_rank.key_columns = ['edu_plan_no']
+        node_by_dept_edu_rank.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
+                                                'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
+                                                'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
+                                                'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
+                                                'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
+        self._append_node(node_by_dept_edu_rank)
 
     # region 조회
     # endregion
@@ -52,7 +80,8 @@ class EDU020E02(BaseSqlApiView):
         filter_data = None
 
         # 연도별 교육 현황
-        if node.node_name == 'byYearEduList' or node.node_name == 'byDeptEduList':
+        if node.node_name == 'byYearEduList' or node.node_name == 'byDeptEduList'\
+                or node.node_name == 'byEmpEduRankList' or node.node_name == 'byDeptEduRankList':
             if len(request_data) == 0:
                 return None
 

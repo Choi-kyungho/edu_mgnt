@@ -74,6 +74,9 @@ class PangEduPlanMgnt(BaseTableModel):
     edu_absence_reason = models.CharField(max_length=200, blank=True, null=True)
     edu_attach_id = models.CharField(max_length=300, blank=True, null=True)
     rmk = models.CharField(max_length=500, blank=True, null=True)
+    edu_cost = models.CharField(max_length=500, blank=True, null=True)
+    dept_code = models.CharField(max_length=500, blank=True, null=True)
+    std_year = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False
