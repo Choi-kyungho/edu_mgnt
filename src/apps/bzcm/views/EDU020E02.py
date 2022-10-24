@@ -86,7 +86,8 @@ class EDU020E02(BaseSqlApiView):
                 return None
 
             filter_data = {
-                'p_edu_absence_yn': request_data.get('p_edu_absence_yn', '%')
+                'p_edu_absence_yn': request_data.get('p_edu_absence_yn', '%'),
+                'p_edu_year': request_data.get('p_edu_year', '%')
             }
         return filter_data
 

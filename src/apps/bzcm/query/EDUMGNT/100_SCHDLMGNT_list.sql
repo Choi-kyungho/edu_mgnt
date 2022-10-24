@@ -9,4 +9,4 @@ select
 from
 	pang_edu_schdl_mgnt a
 where a.edu_year like '%%' || :p_edu_year || '%%'
-  and a.rmk like '%%' || :p_rmk || '%%'
+  and coalesce(a.rmk, '%%') like '%%' || :p_rmk || '%%'

@@ -53,7 +53,7 @@ class EDU040E01(BaseSqlApiView):
         url = 'https://www.inflearn.com/courses/it-programming/web-dev?order=popular'
         driver.get(url)
 
-        i = 1
+        i = 0
 
         while (len(eduList) < 10):
             eduNameList_xpath_id = str('//*[@id="courses_section"]/div/div/div/main/div[3]/div/div[') + str(i) + str(']/div/a/div[2]/div[1]')
@@ -79,8 +79,20 @@ class EDU040E01(BaseSqlApiView):
                 eduDic["eduAuthor"] = eduAuthorFound.text
 
                 # 인기순 top10 리뷰수
-                eduReviewFound = driver.find_element("xpath", eduReviewList_xpath_id)
-                eduDic["eduReview"] = eduReviewFound.text
+                # eduReviewFound = driver.find_element("xpath", eduReviewList_xpath_id)
+                #
+                # print()
+                # print()
+                # print()
+                # print('eduReviewFound.text=============>', eduReviewFound.text)
+                # print()
+                # print()
+                # print()
+                #
+                # if(eduReviewFound.text == ""):
+                #     eduDic["eduReview"] = 0
+                # else:
+                #     eduDic["eduReview"] = eduReviewFound.text
 
                 # 인기순 top10 링크
                 eduLinkFound = driver.find_element("xpath", eduLinkList_xpath_id)

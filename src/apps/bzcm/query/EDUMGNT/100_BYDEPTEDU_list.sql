@@ -10,4 +10,5 @@ select
 from
 	pang_edu_plan_mgnt
 where edu_absence_yn like '%%' || :p_edu_absence_yn || '%%'
-group by dept_code;
+  and pang_sf_get_edu_year(edu_schedule_no) like '%%' || :p_edu_year || '%%'
+group by dept_code, edu_schedule_no;

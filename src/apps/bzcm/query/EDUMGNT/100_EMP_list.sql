@@ -2,7 +2,7 @@ SELECT  emp_no
           ,user_id
        ,emp_name
        ,dept_code
-       ,pang_sf_get_dept_name(dept_code) as dept_name
+       ,sf_get_code_name('CM10', dept_code) as dept_name
        ,email
        ,phon_number
        ,job
