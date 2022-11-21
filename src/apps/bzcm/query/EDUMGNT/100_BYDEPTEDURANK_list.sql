@@ -1,5 +1,6 @@
 select
 	pang_sf_get_dept_name(dept_code) as 부서명,
+	dept_code,
 	cast(TO_CHAR(ROUND(SUM(case
 		when EDU_RATE = 100
 		then EDU_TIME
@@ -12,5 +13,5 @@ where edu_absence_yn like '%%' || :p_edu_absence_yn || '%%'
 group by
 	dept_code, edu_schedule_no
 order by
-	수료시간 desc
+	수료시간
 fetch first 7 rows only;

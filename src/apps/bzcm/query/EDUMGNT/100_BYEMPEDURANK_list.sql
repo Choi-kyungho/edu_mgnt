@@ -1,5 +1,6 @@
 select
 	sf_get_emp_name(emp_no) as 사원명,
+	emp_no,
 	cast(TO_CHAR(ROUND(SUM(case
 		when EDU_RATE = 100
 		then EDU_TIME
@@ -13,5 +14,5 @@ where
 group by
 	emp_no, edu_schedule_no
 order by
-	수료시간 desc
+	수료시간
 fetch first 7 rows only;

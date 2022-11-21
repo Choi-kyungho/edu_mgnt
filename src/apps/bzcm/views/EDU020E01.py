@@ -51,6 +51,18 @@ class EDU020E01(BaseSqlApiView):
 
         self._append_node(node_empByRespCount_list)
 
+        # 인원현황 - 전체 (그리드)
+        node_empByRespCount_list = BusinessNode()
+        node_empByRespCount_list.node_name = 'emplistGrid'
+        node_empByRespCount_list.sql_filename = '110_emplistGrid_list'
+        node_empByRespCount_list.model = PangEmpInfo
+        node_empByRespCount_list.table_name = 'pang_emp_info'
+        node_empByRespCount_list.key_columns = ['emp_no']
+        node_empByRespCount_list.update_columns = ['emp_no', 'user_id', 'emp_name', 'dept_code', 'email', 'phon_number',
+                                                   'posit', 'responsi', 'use_yn']
+
+        self._append_node(node_empByRespCount_list)
+
 
     # region 조회
     # endregion
@@ -67,6 +79,18 @@ class EDU020E01(BaseSqlApiView):
             filter_data = {
                 'p_use_yn': request_data.get('p_use_yn', '%')
             }
+        elif node.node_name == 'emplistGrid':
+            if len(request_data) == 0:
+                return None
+
+            filter_data = {
+                'p_use_yn': request_data.get('p_use_yn', '%'),
+                'p_emp_name': request_data.get('p_emp_name', '%'),
+                'p_dept_code': request_data.get('p_dept_code', '%'),
+                'p_responsi_code': request_data.get('p_responsi_code', '%'),
+                'p_job_code': request_data.get('p_job_code', '%')
+            }
+
         return filter_data
 
     def get_list(self, request):

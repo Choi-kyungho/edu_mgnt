@@ -5,6 +5,7 @@ from vntg_wdk_core.helper.file_helper import SqlFileHelper
 from vntg_wdk_core.views.baseview import BaseSqlApiView
 
 from apps.bzcm.models import PangEduPlanMgnt
+from django.core.mail import EmailMessage
 
 # 교육 현황
 class EDU020E02(BaseSqlApiView):
@@ -29,6 +30,8 @@ class EDU020E02(BaseSqlApiView):
                                     'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
                                     'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
         self._append_node(node_by_year_edu_list)
+
+
 
         # 부서별 교육 현황
         node_by_dept_edu_list = BusinessNode()
@@ -72,6 +75,33 @@ class EDU020E02(BaseSqlApiView):
                                                 'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
         self._append_node(node_by_dept_edu_rank)
 
+        # 교육현황 그리드
+        node_edu_list_grid = BusinessNode()
+        node_edu_list_grid.node_name = 'eduListGrid'
+        node_edu_list_grid.sql_filename = '100_MODALGRID_EduList'
+        node_edu_list_grid.model = PangEduPlanMgnt
+        node_edu_list_grid.table_name = 'pang_edu_plan_mgnt'
+        node_edu_list_grid.key_columns = ['edu_plan_no']
+        node_edu_list_grid.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
+                                                'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
+                                                'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
+                                                'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
+                                                'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
+        self._append_node(node_edu_list_grid)
+
+        node_by_emailSend = BusinessNode()
+        node_by_emailSend.node_name = 'eduEmailSend'
+        # node_by_emailSend.sql_filename = '100_BYYEAREDU_list'
+        # node_by_emailSend.model = PangEduPlanMgnt
+        # node_by_emailSend.table_name = 'pang_edu_plan_mgnt'
+        # node_by_emailSend.key_columns = ['edu_plan_no']
+        # node_by_emailSend.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
+        #                                         'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
+        #                                         'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
+        #                                         'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
+        #                                         'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
+        self._append_node(node_by_emailSend)
+
     # region 조회
     # endregion
 
@@ -82,6 +112,7 @@ class EDU020E02(BaseSqlApiView):
         # 연도별 교육 현황
         if node.node_name == 'byYearEduList' or node.node_name == 'byDeptEduList'\
                 or node.node_name == 'byEmpEduRankList' or node.node_name == 'byDeptEduRankList':
+
             if len(request_data) == 0:
                 return None
 
@@ -89,9 +120,39 @@ class EDU020E02(BaseSqlApiView):
                 'p_edu_absence_yn': request_data.get('p_edu_absence_yn', '%'),
                 'p_edu_year': request_data.get('p_edu_year', '%')
             }
+        elif node.node_name == 'eduListGrid':
+            if len(request_data) == 0:
+                return None
+
+            filter_data = {
+                'p_edu_year': request_data.get('p_edu_year', '%'),
+                'p_emp_name': request_data.get('p_emp_name', '%'),
+                'p_dept_code': request_data.get('p_dept_code', '%'),
+                'p_cmplt_yn': request_data.get('p_cmplt_yn', '%'),
+                'p_emp_no': request_data.get('p_emp_no', '%'),
+            }
+
+        elif node.node_name == 'eduEmailSend':
+            if len(request_data) == 0:
+                return None
+
+            filter_data = {
+
+            }
+
+
         return filter_data
 
     def get_list(self, request):
+
+        print('메일발송합니다~!!')
+
+        # email = EmailMessage(
+        #     '제목 123123123',  # 이메일 제목
+        #     '메일발송 123123123',  # 내용
+        #     to=['cjhol2107@vntgcorp.com'],  # 받는 이메일
+        # )
+        # email.send()
 
         return self._exec_get(request)
 

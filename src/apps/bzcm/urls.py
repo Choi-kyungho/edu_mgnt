@@ -11,6 +11,7 @@ from apps.bzcm.views.EDU020E02 import EDU020E02
 from apps.bzcm.views.EDU020E04 import EDU020E04
 from apps.bzcm.views.EDU040E01 import EDU040E01
 from apps.bzcm.views.EDU000E05 import EDU000E05
+from apps.bzcm.views.EDU000E06 import EDU000E06
 
 urlpatterns = [
     # 'BZCM020E10/list/' 이 url의 호출이 있으면 BZCM020E10라는 뷰에 get_list 함수를 호출한다
@@ -22,6 +23,8 @@ urlpatterns = [
     path('EDU010E01/list/', EDU010E01.as_view({'post': 'get_list'})),
     path('EDU010E01/sublist/', EDU010E01.as_view({'post': 'get_sublist'})),
     path('EDU010E01/', EDU010E01.as_view({'post': 'save'})),
+    path('EDU010E01/getMaxEduSchedule/', EDU010E01.as_view({'post': 'get_max_edu_schedule'})),
+    path('EDU010E01/getEmpInfo/', EDU010E01.as_view({'post': 'get_emp_info'})),
 
     #교육일정
     path('EDU000E04/schdlList/', EDU000E04.as_view({'post': 'get_list'})),
@@ -40,6 +43,10 @@ urlpatterns = [
     path('EDU000E05/sublist/', EDU000E05.as_view({'post': 'get_detail'})),
     path('EDU000E05/', EDU000E05.as_view({'post': 'save'})),
 
+    #교육비예산등록
+    path('EDU000E06/list/', EDU000E06.as_view({'post': 'get_list'})),
+    path('EDU000E06/', EDU000E06.as_view({'post': 'save'})),
+
     #공통코드관리
     path('EDU000E01/codeList/', EDU000E01.as_view({'post': 'get_list'})),
     path('EDU000E01/', EDU000E01.as_view({'post': 'save'})),
@@ -48,20 +55,25 @@ urlpatterns = [
     path('EDU020E01/empCountlist/', EDU020E01.as_view({'post': 'get_list'})),
     path('EDU020E01/empByJobCountlist/', EDU020E01.as_view({'post': 'get_list'})),
     path('EDU020E01/empByRespCountlist/', EDU020E01.as_view({'post': 'get_list'})),
+    path('EDU020E01/emplistGrid/', EDU020E01.as_view({'post': 'get_list'})),
 
     #교육현황
     path('EDU020E02/byYearEduList/', EDU020E02.as_view({'post': 'get_list'})),
     path('EDU020E02/byDeptEduList/', EDU020E02.as_view({'post': 'get_list'})),
-
-    #교육순위
     path('EDU020E02/byEmpEduRankList/', EDU020E02.as_view({'post': 'get_list'})),
     path('EDU020E02/byDeptEduRankList/', EDU020E02.as_view({'post': 'get_list'})),
+    #교육현황-그리드
+    path('EDU020E02/eduListGrid/', EDU020E02.as_view({'post': 'get_list'})),
+    path('EDU020E02/eduEmailSend/', EDU020E02.as_view({'post': 'get_list'})),
 
 
     #교육비현황
     path('EDU020E04/byEmpEduCostList/', EDU020E04.as_view({'post': 'get_list'})),
     path('EDU020E04/byYearEduCostList/', EDU020E04.as_view({'post': 'get_list'})),
     path('EDU020E04/byDeptEduCostList/', EDU020E04.as_view({'post': 'get_list'})),
+
+    path('EDU020E04/byYearEduCostList_Grid1/', EDU020E04.as_view({'post': 'get_list'})),
+    path('EDU020E04/byDeptEduCostList_Grid1/', EDU020E04.as_view({'post': 'get_list'})),
 
     #크롤링테스트
     path('EDU040E01/crawlingList/', EDU040E01.as_view({'post': 'get_list'})),

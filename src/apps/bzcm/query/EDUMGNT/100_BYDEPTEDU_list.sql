@@ -1,6 +1,7 @@
 
 select
     pang_sf_get_dept_name(dept_code) as 부서,
+    dept_code as dept_code,
 	SUM(EDU_TIME) as 계획,
 	TO_CHAR(ROUND(SUM(case
 		when EDU_RATE = 100

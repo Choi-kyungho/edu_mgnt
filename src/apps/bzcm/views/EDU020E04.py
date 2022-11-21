@@ -30,6 +30,21 @@ class EDU020E04(BaseSqlApiView):
                                     'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
         self._append_node(node_by_year_edu_cost_list)
 
+        # 연도별 교육비 현황 그리드
+        node_by_year_edu_cost_list = BusinessNode()
+        node_by_year_edu_cost_list.node_name = 'byYearEduCostList_Grid1'
+        node_by_year_edu_cost_list.sql_filename = '100_byYearEduCost_Grid1'
+        node_by_year_edu_cost_list.model = PangEduPlanMgnt
+        node_by_year_edu_cost_list.table_name = 'pang_edu_plan_mgnt'
+        node_by_year_edu_cost_list.key_columns = ['edu_plan_no']
+        node_by_year_edu_cost_list.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
+                                                     'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
+                                                     'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
+                                                     'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
+                                                     'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year',
+                                                     'dept_code']
+        self._append_node(node_by_year_edu_cost_list)
+
         # 부서별 교육비 현황
         node_by_dept_edu_cost_list = BusinessNode()
         node_by_dept_edu_cost_list.node_name = 'byDeptEduCostList'
@@ -43,6 +58,21 @@ class EDU020E04(BaseSqlApiView):
                                                 'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
                                                 'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
         self._append_node(node_by_dept_edu_cost_list)
+
+        # 부서별 교육비 현황
+        node_by_dept_edu_cost_grid_list = BusinessNode()
+        node_by_dept_edu_cost_grid_list.node_name = 'byDeptEduCostList_Grid1'
+        node_by_dept_edu_cost_grid_list.sql_filename = '100_byDeptEduCost_Grdi1'
+        node_by_dept_edu_cost_grid_list.model = PangEduPlanMgnt
+        node_by_dept_edu_cost_grid_list.table_name = 'pang_edu_plan_mgnt'
+        node_by_dept_edu_cost_grid_list.key_columns = ['edu_plan_no']
+        node_by_dept_edu_cost_grid_list.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
+                                                     'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
+                                                     'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
+                                                     'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
+                                                     'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year',
+                                                     'dept_code']
+        self._append_node(node_by_dept_edu_cost_grid_list)
 
         # 사원별 교육비 현황
         node_by_emp_edu_cost_list = BusinessNode()
@@ -67,12 +97,13 @@ class EDU020E04(BaseSqlApiView):
         filter_data = None
 
         # 연도별 교육 현황
-        if node.node_name == 'byYearEduCostList' or node.node_name == 'byDeptEduCostList' or node.node_name == 'byEmpEduCostList':
+        if node.node_name == 'byYearEduCostList' or node.node_name == 'byDeptEduCostList' or node.node_name == 'byEmpEduCostList' or node.node_name == 'byYearEduCostList_Grid1' or node.node_name == 'byDeptEduCostList_Grid1':
             if len(request_data) == 0:
                 return None
 
             filter_data = {
-                'p_edu_absence_yn': request_data.get('p_edu_absence_yn', '%')
+                'p_edu_absence_yn': request_data.get('p_edu_absence_yn', '%'),
+                'p_edu_year': request_data.get('p_edu_year', '%')
             }
         return filter_data
 

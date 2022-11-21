@@ -115,3 +115,31 @@ class PangEmpInfo(BaseTableModel):
     class Meta:
         managed = False
         db_table = 'pang_emp_info'
+
+class PangEduCustInfo(BaseTableModel):
+    edu_code_id = models.CharField(primary_key=True, max_length=10)
+    edu_code_name = models.CharField(max_length=100)
+    cm_code_type_id = models.CharField(max_length=10, blank=True, null=True)
+    url = models.CharField(max_length=100, blank=True, null=True)
+    addr = models.CharField(max_length=100, blank=True, null=True)
+    business_no = models.CharField(max_length=20, blank=True, null=True)
+    president = models.CharField(max_length=50, blank=True, null=True)
+    tel_no = models.CharField(max_length=100, blank=True, null=True)
+    remarks = models.CharField(max_length=200, blank=True, null=True)
+    use_yn = models.CharField(max_length=1, blank=True, null=True)
+    sort_seq = models.IntegerField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'pang_edu_cust_info'
+
+class PangBugtPlanMgnt(BaseTableModel):
+    bugt_year = models.CharField(primary_key=True, max_length=4)
+    dept_code = models.CharField(max_length=10)
+    bugt_amt = models.IntegerField(blank=True, null=True)
+    use_amt = models.IntegerField(blank=True, null=True)
+    remain_amt = models.IntegerField(blank=True, null=True)
+    remark = models.CharField(max_length=500, blank=True, null=True)
+    use_yn = models.CharField(max_length=1, blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'pang_bugt_plan_mgnt'
