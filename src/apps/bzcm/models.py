@@ -74,14 +74,16 @@ class PangEduPlanMgnt(BaseTableModel):
     edu_absence_reason = models.CharField(max_length=200, blank=True, null=True)
     edu_attach_id = models.CharField(max_length=300, blank=True, null=True)
     rmk = models.CharField(max_length=500, blank=True, null=True)
-    edu_cost = models.CharField(max_length=500, blank=True, null=True)
-    dept_code = models.CharField(max_length=500, blank=True, null=True)
-    std_year = models.CharField(max_length=500, blank=True, null=True)
+    dept_code = models.CharField(max_length=20, blank=True, null=True)
+    edu_cost = models.IntegerField(blank=True, null=True)
+    edu_year = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'pang_edu_plan_mgnt'
-
+        constraints = [
+            models.UniqueConstraint(fields=['edu_plan_no'], name='xpk_pang_edu_plan_mgnt')
+        ]
 
 class PangEduSchdlMgnt(BaseTableModel):
     edu_schedule_no = models.CharField(primary_key=True, max_length=50)
@@ -98,7 +100,7 @@ class PangEduSchdlMgnt(BaseTableModel):
         managed = False
         db_table = 'pang_edu_schdl_mgnt'
         constraints = [
-            models.UniqueConstraint(fields=['edu_plan_no', 'edu_schedule_no'], name='xpk_pang_edu_plan_mgnt1')
+            models.UniqueConstraint(fields=['edu_schedule_no'], name='xpk_pang_edu_schdl_mgnt')
         ]
 
 
