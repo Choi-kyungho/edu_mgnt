@@ -94,6 +94,9 @@ class EDU010E01(BaseSqlApiView):
 
             if len(request_data) == 0:
                 return None
+            filter_data = {
+                'p_close_yn': request_data.get('p_close_yn', 'N'),
+            }
 
         elif node.node_name == 'getEmpInfo':
 

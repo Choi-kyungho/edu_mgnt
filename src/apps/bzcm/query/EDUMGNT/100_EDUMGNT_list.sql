@@ -26,10 +26,12 @@ select
 	a.dept_code,
 	sf_get_code_name('CM10', a.dept_code) as dept_name,
 	a.edu_cost,
-	a.edu_year
+	a.edu_year,
+	c.close_yn
 from
 	pang_edu_plan_mgnt a
 	left outer join pang_emp_info b on b.emp_no = a.emp_no
+	left outer join pang_edu_schdl_mgnt c on c.edu_schedule_no = a.edu_schedule_no
 where
 	    a.edu_year like '%%' || :p_edu_year || '%%'
 	and a.edu_name like '%%' || :p_edu_name || '%%'
