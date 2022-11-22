@@ -3,6 +3,8 @@ import logging
 from vntg_wdk_core.business import BusinessNode
 from vntg_wdk_core.helper.file_helper import SqlFileHelper
 from vntg_wdk_core.views.baseview import BaseSqlApiView
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from apps.bzcm.models import PangEduPlanMgnt
 from django.core.mail import EmailMessage
@@ -20,7 +22,7 @@ class EDU020E02(BaseSqlApiView):
         # 연도별 교육 현황
         node_by_year_edu_list = BusinessNode()
         node_by_year_edu_list.node_name = 'byYearEduList'
-        node_by_year_edu_list.sql_filename = '100_BYYEAREDU_list'
+        node_by_year_edu_list.sql_filename = 'EDU020E02_byYearEduList'
         node_by_year_edu_list.model = PangEduPlanMgnt
         node_by_year_edu_list.table_name = 'pang_edu_plan_mgnt'
         node_by_year_edu_list.key_columns = ['edu_plan_no']
@@ -36,7 +38,7 @@ class EDU020E02(BaseSqlApiView):
         # 부서별 교육 현황
         node_by_dept_edu_list = BusinessNode()
         node_by_dept_edu_list.node_name = 'byDeptEduList'
-        node_by_dept_edu_list.sql_filename = '100_BYDEPTEDU_list'
+        node_by_dept_edu_list.sql_filename = 'EDU020E02_byDeptEduList'
         node_by_dept_edu_list.model = PangEduPlanMgnt
         node_by_dept_edu_list.table_name = 'pang_edu_plan_mgnt'
         node_by_dept_edu_list.key_columns = ['edu_plan_no']
@@ -91,15 +93,15 @@ class EDU020E02(BaseSqlApiView):
 
         node_by_emailSend = BusinessNode()
         node_by_emailSend.node_name = 'eduEmailSend'
-        # node_by_emailSend.sql_filename = '100_BYYEAREDU_list'
-        # node_by_emailSend.model = PangEduPlanMgnt
-        # node_by_emailSend.table_name = 'pang_edu_plan_mgnt'
-        # node_by_emailSend.key_columns = ['edu_plan_no']
-        # node_by_emailSend.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
-        #                                         'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
-        #                                         'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
-        #                                         'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
-        #                                         'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
+        node_by_emailSend.sql_filename = '100_MODALGRID_EduList'
+        node_by_emailSend.model = PangEduPlanMgnt
+        node_by_emailSend.table_name = 'pang_edu_plan_mgnt'
+        node_by_emailSend.key_columns = ['edu_plan_no']
+        node_by_emailSend.update_columns = ['edu_plan_no', 'edu_schedule_no', 'edu_name', 'emp_no',
+                                                'edu_time', 'edu_type', 'edu_supervision', 'edu_location',
+                                                'edu_rate', 'edu_cmplt_yn', 'edu_absence_reason', 'rmk',
+                                                'edu_large_class', 'edu_middle_class', 'edu_from_dt', 'edu_to_dt',
+                                                'edu_attach_id', 'edu_absence_yn', 'edu_cost', 'std_year', 'dept_code']
         self._append_node(node_by_emailSend)
 
     # region 조회
@@ -137,22 +139,42 @@ class EDU020E02(BaseSqlApiView):
                 return None
 
             filter_data = {
-
+                'p_email': request_data.get('p_email', '%'),
+                'p_edu_year': request_data.get('p_edu_year', '%'),
+                'p_edu_plan_hour': request_data.get('p_edu_plan_hour', '%'),
+                'p_edu_cmplt_hour': request_data.get('p_edu_cmplt_hour', '%'),
+                'p_edu_cmplt_rate': request_data.get('p_edu_cmplt_rate', '%'),
             }
+
+            self.sendMail(filter_data);
+
+            return
 
 
         return filter_data
 
     def get_list(self, request):
 
-        print('메일발송합니다~!!')
-
-        # email = EmailMessage(
-        #     '제목 123123123',  # 이메일 제목
-        #     '메일발송 123123123',  # 내용
-        #     to=['cjhol2107@vntgcorp.com'],  # 받는 이메일
-        # )
-        # email.send()
-
         return self._exec_get(request)
+
+    def sendMail(self, request):
+
+        content = ''
+        content += '교육 일정 내에 교육수료를 진행해주시기 바랍니다.\n\n'
+        content += '□ 기준년도:' + request.data.get('p_edu_year') + '년\n'
+        content += '□ 교육계획시간:' + request.data.get('p_edu_plan_hour') + '\n'
+        content += '□ 교육실적시간:' + request.data.get('p_edu_cmplt_hour') + '\n'
+        content += '□ 교육수료율:' + request.data.get('p_edu_cmplt_rate') + '\n'
+
+        email = EmailMessage(
+            '[교육관리시스템]  ',  # 이메일 제목
+            content,  # 내용
+            #to=['cjhol2107@vntgcorp.com'],  # 받는 이메일
+            to=[request.data.get('p_email')],  # 받는 이메일
+        )
+        email.send()
+
+        return_data = {'success': True, 'code': 0, 'message': 'OK', 'data': None}
+        return_data['data'] = 'success'
+        return Response(return_data, status.HTTP_200_OK)
 

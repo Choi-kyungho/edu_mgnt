@@ -19,7 +19,7 @@ class EDU020E04(BaseSqlApiView):
         # 연도별 교육비 현황
         node_by_year_edu_cost_list = BusinessNode()
         node_by_year_edu_cost_list.node_name = 'byYearEduCostList'
-        node_by_year_edu_cost_list.sql_filename = '100_byYearEduCost'
+        node_by_year_edu_cost_list.sql_filename = 'EDU020E04_byYearEduCostList'
         node_by_year_edu_cost_list.model = PangEduPlanMgnt
         node_by_year_edu_cost_list.table_name = 'pang_edu_plan_mgnt'
         node_by_year_edu_cost_list.key_columns = ['edu_plan_no']
@@ -33,7 +33,7 @@ class EDU020E04(BaseSqlApiView):
         # 연도별 교육비 현황 그리드
         node_by_year_edu_cost_list = BusinessNode()
         node_by_year_edu_cost_list.node_name = 'byYearEduCostList_Grid1'
-        node_by_year_edu_cost_list.sql_filename = '100_byYearEduCost_Grid1'
+        node_by_year_edu_cost_list.sql_filename = 'EDU020E04_byYearEduCost'
         node_by_year_edu_cost_list.model = PangEduPlanMgnt
         node_by_year_edu_cost_list.table_name = 'pang_edu_plan_mgnt'
         node_by_year_edu_cost_list.key_columns = ['edu_plan_no']
@@ -48,7 +48,7 @@ class EDU020E04(BaseSqlApiView):
         # 부서별 교육비 현황
         node_by_dept_edu_cost_list = BusinessNode()
         node_by_dept_edu_cost_list.node_name = 'byDeptEduCostList'
-        node_by_dept_edu_cost_list.sql_filename = '100_byDeptEduCost'
+        node_by_dept_edu_cost_list.sql_filename = 'EDU020E04_byDeptEduCost'
         node_by_dept_edu_cost_list.model = PangEduPlanMgnt
         node_by_dept_edu_cost_list.table_name = 'pang_edu_plan_mgnt'
         node_by_dept_edu_cost_list.key_columns = ['edu_plan_no']
@@ -62,7 +62,7 @@ class EDU020E04(BaseSqlApiView):
         # 부서별 교육비 현황
         node_by_dept_edu_cost_grid_list = BusinessNode()
         node_by_dept_edu_cost_grid_list.node_name = 'byDeptEduCostList_Grid1'
-        node_by_dept_edu_cost_grid_list.sql_filename = '100_byDeptEduCost_Grdi1'
+        node_by_dept_edu_cost_grid_list.sql_filename = 'EDU020E04_byDeptEduCostGrid'
         node_by_dept_edu_cost_grid_list.model = PangEduPlanMgnt
         node_by_dept_edu_cost_grid_list.table_name = 'pang_edu_plan_mgnt'
         node_by_dept_edu_cost_grid_list.key_columns = ['edu_plan_no']

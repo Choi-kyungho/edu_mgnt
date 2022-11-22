@@ -64,7 +64,7 @@ urlpatterns = [
     path('EDU020E02/byDeptEduRankList/', EDU020E02.as_view({'post': 'get_list'})),
     #교육현황-그리드
     path('EDU020E02/eduListGrid/', EDU020E02.as_view({'post': 'get_list'})),
-    path('EDU020E02/eduEmailSend/', EDU020E02.as_view({'post': 'get_list'})),
+    path('EDU020E02/eduEmailSend/', EDU020E02.as_view({'post': 'sendMail'})),
 
 
     #교육비현황
