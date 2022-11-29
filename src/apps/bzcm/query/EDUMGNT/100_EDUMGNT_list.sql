@@ -27,12 +27,15 @@ select
 	sf_get_code_name('CM10', a.dept_code) as dept_name,
 	a.edu_cost,
 	a.edu_year,
-	c.close_yn
+	c.close_yn,
+	d.file_name as edu_file_name
 from
 	pang_edu_plan_mgnt a
 	left outer join pang_emp_info b on b.emp_no = a.emp_no
 	left outer join pang_edu_schdl_mgnt c on c.edu_schedule_no = a.edu_schedule_no
-where
-	    a.edu_year like '%%' || :p_edu_year || '%%'
+	left outer join cm_attach d
+	on a.edu_attach_id = d.attach_uid
+	and d.delete_yn = 'N'
+where a.edu_year like '%%' || :p_edu_year || '%%'
 	and a.edu_name like '%%' || :p_edu_name || '%%'
 	and coalesce(b.emp_name, '%%') like '%%' || :p_emp_name || '%%'

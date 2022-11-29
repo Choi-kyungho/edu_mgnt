@@ -76,8 +76,8 @@ class EDU020E04(BaseSqlApiView):
 
         # 사원별 교육비 현황
         node_by_emp_edu_cost_list = BusinessNode()
-        node_by_emp_edu_cost_list.node_name = 'byEmpEduCostList'
-        node_by_emp_edu_cost_list.sql_filename = '100_byEmpEduCost'
+        node_by_emp_edu_cost_list.node_name = 'eduCostList_ModalGrid'
+        node_by_emp_edu_cost_list.sql_filename = 'EDU020E04_eduCostList_ModalGrid'
         node_by_emp_edu_cost_list.model = PangEduPlanMgnt
         node_by_emp_edu_cost_list.table_name = 'pang_edu_plan_mgnt'
         node_by_emp_edu_cost_list.key_columns = ['edu_plan_no']
@@ -105,6 +105,17 @@ class EDU020E04(BaseSqlApiView):
                 'p_edu_absence_yn': request_data.get('p_edu_absence_yn', '%'),
                 'p_edu_year': request_data.get('p_edu_year', '%')
             }
+
+        elif node.node_name == 'eduCostList_ModalGrid':
+            if len(request_data) == 0:
+                return None
+
+            filter_data = {
+                'p_edu_year': request_data.get('p_edu_year', '%'),
+                'p_emp_name': request_data.get('p_emp_name', '%'),
+                'p_dept_code': request_data.get('p_dept_code', '%'),
+            }
+
         return filter_data
 
     def get_list(self, request):

@@ -6,8 +6,9 @@ from vntg_wdk_core.helper.file_helper import SqlFileHelper
 from vntg_wdk_core.views.baseview import BaseSqlApiView
 from vntg_wdk_core.enums import UpdateType
 from vntg_wdk_common.utils import get_next_seq_value
-
-from apps.bzcm.models import PangEduPlanMgnt, PangDeptInfo, PangEduSchdlMgnt, PangBugtPlanMgnt, PangEduCustInfo
+from rest_framework.response import Response
+from rest_framework import status
+from apps.bzcm.models import PangEduPlanMgnt, PangDeptInfo, PangEduSchdlMgnt, PangEduCustInfo
 
 LOGGER = logging.getLogger(__name__)
 
@@ -72,4 +73,19 @@ class EDU000E05(BaseSqlApiView):
 
 
     def save(self, request, *args, **kwargs):
-        return self._exec_save(request)
+
+        try:
+            return_data = self._exec_save(request)
+
+            if return_data.data['success'] == False:
+                return Response(
+                    {'success': False, 'code': 0, 'message': return_data.data['data'], 'data': False},
+                    status.HTTP_200_OK)
+
+            return return_data
+
+        except Exception as ex:
+
+            return Response({'success': False, 'code': 0, 'message': '오류발생', 'data': False},
+                            status.HTTP_200_OK)
+        # return self._exec_save(request)

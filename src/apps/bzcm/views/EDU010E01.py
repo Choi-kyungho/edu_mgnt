@@ -1,5 +1,10 @@
 import logging
 
+
+from rest_framework import status
+
+from rest_framework.response import Response
+
 from vntg_wdk_core.business import BusinessNode
 from vntg_wdk_core.helper.file_helper import SqlFileHelper
 from vntg_wdk_core.views.baseview import BaseSqlApiView
@@ -82,12 +87,18 @@ class EDU010E01(BaseSqlApiView):
 
         # 교육계획/실적 목록 조회조건
         if node.node_name == 'list':
+
             if len(request_data) == 0:
                 return None
             filter_data = {
                 'p_edu_year': request_data.get('p_edu_year'),
-                'p_edu_name': request_data.get('p_edu_name', '%'),
+                'p_dept_code': request_data.get('p_dept_code', '%'),
                 'p_emp_name': request_data.get('p_emp_name', '%'),
+                'p_edu_large_class': request_data.get('p_edu_large_class', '%'),
+                'p_edu_middle_class': request_data.get('p_edu_middle_class', '%'),
+                'p_edu_supervision': request_data.get('p_edu_supervision', '%'),
+                'p_edu_name': request_data.get('p_edu_name', '%'),
+                'p_edu_cmplt_yn': request_data.get('p_edu_cmplt_yn', '%'),
             }
 
         elif node.node_name == 'getMaxEduSchedule':
@@ -172,12 +183,27 @@ class EDU010E01(BaseSqlApiView):
                 node.change_key_values(target_row=row, new_key_data={'edu_plan_no': new_edu_plan_no})
 
     def save(self, request):
-        """
-        업무일지 등록 저장
 
-        신규행일 경우 report_no, sno 채번
-        """
 
-        print(request)
-        return self._exec_save(request)
+        try:
+           return_data = self._exec_save(request)
+
+           if return_data.data['success'] == False:
+               return Response(
+                   {'success': False, 'code': 0, 'message': return_data.data['data'], 'data': False},
+                   status.HTTP_200_OK)
+
+           return return_data
+
+        except Exception as ex:
+
+            return Response({'success': False, 'code': 0, 'message': '오류발생', 'data': False},
+                            status.HTTP_200_OK)
+
+
+
+        # print(request)
+        # return self._exec_save(request)
+
+
     # endregion

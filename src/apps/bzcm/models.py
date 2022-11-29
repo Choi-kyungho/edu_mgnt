@@ -49,6 +49,9 @@ class PangDeptInfo(BaseTableModel):
     dept_code = models.CharField(primary_key=True, max_length=50)
     dept_name = models.CharField(max_length=50, blank=True, null=True)
     use_yn = models.CharField(max_length=1)
+    valid_start_date = models.DateTimeField(blank=True, null=True)
+    valid_end_date = models.DateTimeField(blank=True, null=True)
+    parent_dept_code = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False

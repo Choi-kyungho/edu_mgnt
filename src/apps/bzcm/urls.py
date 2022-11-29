@@ -46,6 +46,8 @@ urlpatterns = [
     #교육비예산등록
     path('EDU000E06/list/', EDU000E06.as_view({'post': 'get_list'})),
     path('EDU000E06/', EDU000E06.as_view({'post': 'save'})),
+    path('EDU000E06/listGraphFirst/', EDU000E06.as_view({'post': 'get_list'})),
+    path('EDU000E06/listGraph/', EDU000E06.as_view({'post': 'get_list'})),
 
     #공통코드관리
     path('EDU000E01/codeList/', EDU000E01.as_view({'post': 'get_list'})),
@@ -74,6 +76,8 @@ urlpatterns = [
 
     path('EDU020E04/byYearEduCostList_Grid1/', EDU020E04.as_view({'post': 'get_list'})),
     path('EDU020E04/byDeptEduCostList_Grid1/', EDU020E04.as_view({'post': 'get_list'})),
+
+    path('EDU020E04/eduCostList_ModalGrid/', EDU020E04.as_view({'post': 'get_list'})),
 
     #크롤링테스트
     path('EDU040E01/crawlingList/', EDU040E01.as_view({'post': 'get_list'})),
